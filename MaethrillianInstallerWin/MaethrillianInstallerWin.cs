@@ -84,73 +84,82 @@ namespace MaethrillianInstallerWin
 
             installButton.Click += (s, e) =>
             {
-                var version = buttonPTR.Checked ? VersionPTR : VersionVanilla;
-                var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                var localStateDir = Path.Combine(appData, "Packages\\Microsoft.HoganThreshold_8wekyb3d8bbwe\\LocalState");
-                var localPkgDir = Path.Combine(localStateDir, String.Format("GTS\\{0}_active", version));
-                var localPkgPath = Path.Combine(localPkgDir, "maethrillian.pkg");
-                var localManifestPath = Path.Combine(localPkgDir, String.Format("{0}_file_manifest.xml", version));
-
-                if (Directory.Exists(localPkgDir))
+                try
                 {
-                    if (File.Exists(localPkgPath))
+                    var version = buttonPTR.Checked ? VersionPTR : VersionVanilla;
+                    var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                    var localStateDir = Path.Combine(appData, "Packages\\Microsoft.HoganThreshold_8wekyb3d8bbwe\\LocalState");
+                    var localPkgDir = Path.Combine(localStateDir, String.Format("GTS\\{0}_active", version));
+                    var localPkgPath = Path.Combine(localPkgDir, "maethrillian.pkg");
+                    var localManifestPath = Path.Combine(localPkgDir, String.Format("{0}_file_manifest.xml", version));
+
+                    if (Directory.Exists(localPkgDir))
                     {
-                        File.Delete(localPkgPath);
-                        status.Text = "Removing local package...";
-                    }
-                    if (File.Exists(localManifestPath))
-                    {
-                        File.Delete(localManifestPath);
-                        status.Text = "Removing local manifest...";
-                    }
-                }
-                else
-                {
-                    Directory.CreateDirectory(localPkgDir);
-                }
-
-                if (selectedMod == defaultMod)
-                {
-                    status.Text = "Reverted to vanilla.";
-                    return;
-                }
-
-
-                status.Text = "Installing " + selectedMod + "...";
-
-                // Get the patch file
-                string patchFileName;
-                using (var client = new WebClient())
-                {
-                    string patchURI = mods[selectedMod];
-
-                    client.Headers.Add("user-agent", "Halo Wars 2 Mod Installer");
-
-                    // Download patch file
-                    patchFileName = Path.GetTempFileName();
-                    client.DownloadFile(patchURI, patchFileName);
-                }
-
-                // Extract patch
-                using (ZipArchive archive = ZipFile.OpenRead(patchFileName))
-                {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        string extension = Path.GetExtension(entry.Name);
-                        switch (extension)
+                        if (File.Exists(localPkgPath))
                         {
-                            case ".xml":
-                                entry.ExtractToFile(localManifestPath);
-                                break;
-                            case ".pkg":
-                                entry.ExtractToFile(localPkgPath);
-                                break;
-                            default: break;
+                            File.Delete(localPkgPath);
+                            status.Text = "Removing local package...";
+                        }
+                        if (File.Exists(localManifestPath))
+                        {
+                            File.Delete(localManifestPath);
+                            status.Text = "Removing local manifest...";
                         }
                     }
-                }
+                    else
+                    {
+                        Directory.CreateDirectory(localPkgDir);
+                    }
 
-                status.Text = selectedMod + " installed sucessfully.";
+                    if (selectedMod == defaultMod)
+                    {
+                        status.Text = "Reverted to vanilla.";
+                        return;
+                    }
+
+
+                    status.Text = "Installing " + selectedMod + "...";
+
+                    // Get the patch file
+                    string patchFileName;
+                    using (var client = new WebClient())
+                    {
+                        string patchURI = mods[selectedMod];
+
+                        client.Headers.Add("user-agent", "Halo Wars 2 Mod Installer");
+
+                        // Download patch file
+                        patchFileName = Path.GetTempFileName();
+                        client.DownloadFile(patchURI, patchFileName);
+                    }
+
+                    // Extract patch
+                    using (ZipArchive archive = ZipFile.OpenRead(patchFileName))
+                    {
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            string extension = Path.GetExtension(entry.Name);
+                            switch (extension)
+                            {
+                                case ".xml":
+                                    entry.ExtractToFile(localManifestPath);
+                                    break;
+                                case ".pkg":
+                                    entry.ExtractToFile(localPkgPath);
+                                    break;
+                                default: break;
+                            }
+                        }
+                    }
+
+                    status.Text = selectedMod + " installed sucessfully.";
+                    return;
+                }
+                catch (Exception exception)
+                {
+                    status.Text = "Error! See error.log for more info.";
+                    File.WriteAllText("error.log", exception.Message);
+                }
             };
         }
     }
