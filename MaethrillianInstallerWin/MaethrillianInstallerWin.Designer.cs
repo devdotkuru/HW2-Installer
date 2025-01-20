@@ -91,7 +91,7 @@
             // buttonPTR
             // 
             buttonPTR.AutoSize = true;
-            buttonPTR.Location = new Point(265, 349);
+            buttonPTR.Location = new Point(265, 347);
             buttonPTR.Name = "buttonPTR";
             buttonPTR.Size = new Size(56, 24);
             buttonPTR.TabIndex = 5;
