@@ -150,7 +150,7 @@ namespace MaethrillianInstallerWin
                     }
                 }
 
-                statusStrip1.Text = selectedMod + " installed sucessfully.";
+                status.Text = selectedMod + " installed sucessfully.";
             };
         }
     }
