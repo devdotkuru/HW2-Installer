@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO.Compression;
 using System.Net;
+using System.Resources;
 using System.Security.Policy;
 using System.Xml.Linq;
 using static System.Net.WebRequestMethods;
@@ -34,17 +35,25 @@ namespace MaethrillianInstallerWin
 
         public Dictionary<string, string> mods = new Dictionary<string, string>()
         {
-            { "Vanilla HW2",     "" },
-            { "The Yappening",   "https://github.com/Blackandfan/TheYappening/releases/latest/download/package.zip" },
-            { "Color Mod",       "https://github.com/Blackandfan/HW2-Yoda/releases/latest/download/package.zip" },
-            { "Flood Onslaught", "https://github.com/Blackandfan/FloodOnslaught/releases/latest/download/package.zip" }
+            { "Vanilla HW2",        "" },
+            { "The Yappening",      "https://github.com/Blackandfan/TheYappening/releases/latest/download/package.zip" },
+            { "Fight Club",         "https://github.com/Blackandfan/HW2-Yoda/releases/latest/download/package.zip" },
+            { "Fight Club (Dev)",   "https://github.com/Blackandfan/HW2-Yoda/releases/download/0.1/package.zip" },
+            { "Maethrillian",       "https://github.com/eitener/maethrillian/releases/latest/download/maethrillian.zip" },
+            { "Flood Onslaught",    "https://github.com/Blackandfan/FloodOnslaught/releases/latest/download/package.zip" },
+            { "Project Nuphillion", "https://github.com/CutesyThrower12/Nuphillion/releases/download/vInDev/blacksNuphillion.zip" },
+            { "No Limits",          "https://github.com/Blackandfan/FloodOnslaught/releases/download/0.0.1/package.zip" }
         };
         public Dictionary<string, Image> images = new Dictionary<string, Image>()
         {
-            { "Vanilla HW2",     Image.FromFile("hw2.jpg") },
-            { "The Yappening",   Image.FromFile("yap.jpg") },
-            { "Color Mod",       Image.FromFile("color.jpg") },
-            { "Flood Onslaught", Image.FromFile("flood.jpg") }
+            { "Vanilla HW2",        Properties.Resources.hw2 },
+            { "The Yappening",      Properties.Resources.yap },
+            { "Fight Club",         Properties.Resources.color },
+            { "Fight Club (Dev)",   Properties.Resources.color },
+            { "Maethrillian",       Properties.Resources.maethrillian },
+            { "Flood Onslaught",    Properties.Resources.flood },
+            { "Project Nuphillion", Properties.Resources.nuphillion },
+            { "No Limits",          Properties.Resources.nolimit }
         };
 
         const string VersionVanilla = "1_11_2931_2";
@@ -61,13 +70,13 @@ namespace MaethrillianInstallerWin
             string selectedMod = defaultMod;
 
             int offset = 26;
-            foreach(var v in mods)
+            foreach (var v in mods)
             {
                 var cur = new RadioButton() { Text = v.Key };
                 if (v.Key == defaultMod)
                 {
                     cur.Checked = true;
-                    imageBox.Image = images[v.Key];
+                    imageBox.Image = Properties.Resources.hw2;
                 }
                 cur.Location = new Point(6, offset);
                 cur.Size = new Size(150, 24);
@@ -152,15 +161,16 @@ namespace MaethrillianInstallerWin
                         }
                     }
 
-                    status.Text = selectedMod + " installed sucessfully.";
+                    status.Text = selectedMod + " installed successfully.";
                     return;
                 }
                 catch (Exception exception)
                 {
-                    status.Text = "Error! See error.log for more info.";
+                    status.Text = "Error! Failed to install mod.";
                     File.WriteAllText("error.log", exception.Message);
                 }
             };
         }
+
     }
 }

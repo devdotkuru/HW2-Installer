@@ -36,6 +36,7 @@
             statusStrip1 = new StatusStrip();
             status = new ToolStripStatusLabel();
             buttonPTR = new CheckBox();
+            label1 = new Label();
             ((System.ComponentModel.ISupportInitialize)imageBox).BeginInit();
             statusStrip1.SuspendLayout();
             SuspendLayout();
@@ -47,6 +48,7 @@
             imageBox.Margin = new Padding(4, 3, 4, 3);
             imageBox.Name = "imageBox";
             imageBox.Size = new Size(309, 174);
+            imageBox.SizeMode = PictureBoxSizeMode.StretchImage;
             imageBox.TabIndex = 1;
             imageBox.TabStop = false;
             // 
@@ -56,14 +58,14 @@
             group.Margin = new Padding(4, 3, 4, 3);
             group.Name = "group";
             group.Padding = new Padding(4, 3, 4, 3);
-            group.Size = new Size(309, 139);
+            group.Size = new Size(309, 284);
             group.TabIndex = 2;
             group.TabStop = false;
             group.Text = "Select Mod";
             // 
             // installButton
             // 
-            installButton.Location = new Point(12, 373);
+            installButton.Location = new Point(11, 500);
             installButton.Margin = new Padding(4, 3, 4, 3);
             installButton.Name = "installButton";
             installButton.Size = new Size(309, 30);
@@ -75,9 +77,9 @@
             // 
             statusStrip1.ImageScalingSize = new Size(20, 20);
             statusStrip1.Items.AddRange(new ToolStripItem[] { status });
-            statusStrip1.Location = new Point(0, 411);
+            statusStrip1.Location = new Point(0, 533);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(333, 26);
+            statusStrip1.Size = new Size(333, 22);
             statusStrip1.TabIndex = 4;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -85,24 +87,34 @@
             // 
             status.Margin = new Padding(0, 3, 0, 3);
             status.Name = "status";
-            status.Size = new Size(108, 20);
+            status.Size = new Size(87, 16);
             status.Text = "PLACEHOLDER";
             // 
             // buttonPTR
             // 
             buttonPTR.AutoSize = true;
-            buttonPTR.Location = new Point(265, 347);
+            buttonPTR.Location = new Point(274, 475);
             buttonPTR.Name = "buttonPTR";
-            buttonPTR.Size = new Size(56, 24);
+            buttonPTR.Size = new Size(46, 19);
             buttonPTR.TabIndex = 5;
             buttonPTR.Text = "PTR";
             buttonPTR.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 479);
+            label1.Name = "label1";
+            label1.Size = new Size(142, 15);
+            label1.TabIndex = 6;
+            label1.Text = "discord.gg/CWbugEvu9N";
+            // 
             // MaethrillianInstallerWin
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(333, 437);
+            ClientSize = new Size(333, 555);
+            Controls.Add(label1);
             Controls.Add(buttonPTR);
             Controls.Add(statusStrip1);
             Controls.Add(installButton);
@@ -129,5 +141,7 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel status;
         private CheckBox buttonPTR;
+        private LinkLabel lblDiscord;
+        private Label label1;
     }
 }
