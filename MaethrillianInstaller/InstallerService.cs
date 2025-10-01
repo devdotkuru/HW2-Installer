@@ -18,15 +18,24 @@ namespace MaethrillianInstaller
             Version = version;
             LocalStateDirectory = localStateDirectory;
             LocalPackageDirectory = Path.Combine(localStateDirectory, $"GTS\\{version}_active");
-            LocalPackagePath = Path.Combine(LocalPackageDirectory, "maethrillian.pkg");
             LocalManifestPath = Path.Combine(LocalPackageDirectory, $"{version}_file_manifest.xml");
         }
 
         public string Version { get; }
         public string LocalStateDirectory { get; }
         public string LocalPackageDirectory { get; }
-        public string LocalPackagePath { get; }
         public string LocalManifestPath { get; }
+
+        public string? LocalPackageFileName { get; private set; }
+
+        public string? LocalPackagePath => LocalPackageFileName == null
+            ? null
+            : Path.Combine(LocalPackageDirectory, LocalPackageFileName);
+
+        public void UpdateLocalPackageFileName(string? fileName)
+        {
+            LocalPackageFileName = fileName;
+        }
     }
 
     public enum InstallerStage
@@ -94,11 +103,10 @@ namespace MaethrillianInstaller
             progress?.Report(InstallerProgress.FromStage(InstallerStage.ResetStarted));
             if (Directory.Exists(context.LocalPackageDirectory))
             {
-                if (File.Exists(context.LocalPackagePath))
+                foreach (var pkgFile in Directory.GetFiles(context.LocalPackageDirectory, "*.pkg", SearchOption.TopDirectoryOnly))
                 {
-                    File.Delete(context.LocalPackagePath);
+                    File.Delete(pkgFile);
                 }
-
                 if (File.Exists(context.LocalManifestPath))
                 {
                     File.Delete(context.LocalManifestPath);
@@ -108,6 +116,7 @@ namespace MaethrillianInstaller
             {
                 Directory.CreateDirectory(context.LocalPackageDirectory);
             }
+            context.UpdateLocalPackageFileName(null);
             progress?.Report(InstallerProgress.FromStage(InstallerStage.ResetCompleted, 100));
         }
 
@@ -125,7 +134,8 @@ namespace MaethrillianInstaller
                 patchFileName = DownloadPatch(patchUri, progress);
                 progress?.Report(InstallerProgress.FromStage(InstallerStage.DownloadCompleted, 100));
                 progress?.Report(InstallerProgress.FromStage(InstallerStage.ExtractStarted));
-                ExtractPatch(patchFileName, context.LocalManifestPath, context.LocalPackagePath, progress);
+                var packageFileName = ExtractPatch(patchFileName, context.LocalManifestPath, context.LocalPackageDirectory, progress);
+                context.UpdateLocalPackageFileName(packageFileName);
                 progress?.Report(InstallerProgress.FromStage(InstallerStage.ExtractCompleted, 100));
                 progress?.Report(InstallerProgress.FromStage(InstallerStage.InstallCompleted, 100));
             }
@@ -217,9 +227,10 @@ namespace MaethrillianInstaller
             return patchFileName;
         }
 
-        private static void ExtractPatch(string patchFileName, string manifestPath, string packagePath, IProgress<InstallerProgress>? progress)
+        private static string? ExtractPatch(string patchFileName, string manifestPath, string packageDirectory, IProgress<InstallerProgress>? progress)
         {
             using var archive = ZipFile.OpenRead(patchFileName);
+            Directory.CreateDirectory(packageDirectory);
             var entries = archive.Entries
                 .Where(entry =>
                 {
@@ -230,6 +241,7 @@ namespace MaethrillianInstaller
 
             var processed = 0;
             var total = entries.Count;
+            string? extractedPackageFileName = null;
             foreach (ZipArchiveEntry entry in entries)
             {
                 processed++;
@@ -242,7 +254,13 @@ namespace MaethrillianInstaller
                         entry.ExtractToFile(manifestPath, overwrite: true);
                         break;
                     case ".pkg":
-                        entry.ExtractToFile(packagePath, overwrite: true);
+                        var fileName = Path.GetFileName(entry.Name);
+                        if (!string.IsNullOrWhiteSpace(fileName))
+                        {
+                            var destinationPath = Path.Combine(packageDirectory, fileName);
+                            entry.ExtractToFile(destinationPath, overwrite: true);
+                            extractedPackageFileName = fileName;
+                        }
                         break;
                     default:
                         break;
@@ -250,6 +268,7 @@ namespace MaethrillianInstaller
 
                 progress?.Report(InstallerProgress.FromStage(InstallerStage.ExtractProgress, percent, entry.FullName));
             }
+            return extractedPackageFileName;
         }
 
         [DataContract]
