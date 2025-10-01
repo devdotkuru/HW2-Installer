@@ -57,7 +57,7 @@ namespace MaethrillianInstaller.GUI
             logger.Log(LogLevel.Information, "Main window initialized.");
 
             linkDiscord.Links.Clear();
-            linkDiscord.Links.Add(0, linkDiscord.Text.Length, "https://discord.gg/CWbugEvu9N");
+            linkDiscord.Links.Add(0, linkDiscord.Text.Length, "https://discord.gg/Gd7wmjfrSS");
             linkDiscord.LinkClicked += LinkDiscordOnLinkClicked;
             installButton.Click += InstallButtonOnClick;
             Shown += async (_, _) => await InitializeIndexAsync();
