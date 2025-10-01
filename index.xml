@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InstallerIndex>
+  <Versions>
+    <Vanilla>1_11_2931_2</Vanilla>
+    <Ptr>1_11_2931_10</Ptr>
+  </Versions>
+  <LocalStatePackagePath>Packages\Microsoft.HoganThreshold_8wekyb3d8bbwe\LocalState</LocalStatePackagePath>
+  <Mods>
+    <Mod name="Vanilla HW2" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/hw2.jpg" info="Restores the game to its original, unmodified state." />
+    <Mod name="The Yappening" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstallerWin/Resources/yap.jpg" url="https://github.com/Blackandfan/TheYappening/releases/latest/download/package.zip" info="placeholder" />
+    <Mod name="Fight Club" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/color.jpg" url="https://github.com/Blackandfan/HW2-Yoda/releases/latest/download/package.zip" info="placeholder" />
+    <Mod name="Fight Club (Dev)" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/color.jpg" url="https://github.com/Blackandfan/HW2-Yoda/releases/download/0.1/package.zip" info="placeholder" />
+    <Mod name="Maethrillian" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/maethrillian.jpg" url="https://github.com/eitener/maethrillian/releases/latest/download/maethrillian.zip" info="placeholder" />
+    <Mod name="Flood Onslaught" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/flood.jpg" url="https://github.com/Blackandfan/FloodOnslaught/releases/latest/download/package.zip" info="placeholder" />
+    <Mod name="Project Nuphillion" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/nuphillion.jpg" url="https://github.com/CutesyThrower12/Nuphillion/releases/download/vInDev/blacksNuphillion.zip" info="placeholder" />
+    <Mod name="No Limits" image="https://raw.githubusercontent.com/Blackandfan/HW2-Installer/main/MaethrillianInstaller.Desktop/Resources/nolimit.jpg" url="https://github.com/Blackandfan/FloodOnslaught/releases/download/0.0.1/package.zip" info="placeholder" />
+  </Mods>
+</InstallerIndex>
